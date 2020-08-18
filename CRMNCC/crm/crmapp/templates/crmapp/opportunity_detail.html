@@ -1,0 +1,143 @@
+{% extends 'crmapp/base.html' %}
+
+{% block content %}
+
+
+
+
+  <br>
+  <div class="container">
+
+
+<div class="row">
+<div class="column "></div>
+
+
+
+<div class="column">
+  <button type="button" class="btn btn-danger">
+    Customer <span class="badge badge-light">{{opportunitynow.customer}}</span>
+    <span class="sr-only">unread messages</span>
+  </button>
+
+  <button type="button" class="btn btn-danger">
+    opportunity No <span class="badge badge-light">{{opportunitynow.opportunityno}}</span>
+    <span class="sr-only">unread messages</span>
+  </button>
+
+  <button type="button" class="btn btn-danger">
+    opportunity No of orders <span class="badge badge-light">{{opportunityorders.count}}</span>
+    <span class="sr-only">unread messages</span>
+  </button>
+
+  <button type="button" class="btn btn-danger">
+    Value <span class="badge badge-light">{{mrcsum1}}</span>
+    <span class="sr-only">unread messages</span>
+  </button>
+
+
+
+
+<table class="table mt-5">
+    <thead class="thead-dark">
+  <tr>
+    <th class="text-center">LMS</th>
+
+    <th class="text-center">Creation Date</th>
+    <th class="text-center">Sales Man</th>
+    <th class="text-center">Job Title</th>
+    <th class="text-center">Customer</th>
+    <th class="text-center">Service</th>
+    <th class="text-center">Service Category</th>
+    <th class="text-center">Quantity</th>
+
+    <th class="text-center">Total NRC</th>
+    <th class="text-center">Total MRC</th>
+    <th class="text-center">Status</th>
+
+  </tr>
+
+  <tr>
+  <td class="border text-center">{{opportunitynow.lms}}</td>
+
+  <td class="border text-center">{{opportunitynow.creationdate}}</td>
+  <td class="border text-center">{{opportunitynow.salesman}}</td>
+  <td class="border text-center">{{opportunitynow.employeejobtitle}}</td>
+  <td class="border text-center">{{opportunitynow.customer}}</td>
+  <td class="border text-center">{{opportunitynow.service}}</td>
+  <td class="border text-center">{{opportunitynow.servicecategory}}</td>
+  <td class="border text-center">{{opportunitynow.noofservices}}</td>
+  <td class="border text-center">{{opportunitynow.totalnrc}}</td>
+  <td class="border text-center">{{opportunitynow.totalmrc}}</td>
+  <td class="border text-center">{{opportunitynow.status}}</td>
+</table>
+
+{% if opportunityorders.count%}
+
+
+
+<div class="p-1 mb-2 mt-5 bg-warning text-dark d-flex justify-content-center"><h5 >List Of Orders</h5></div>
+<table class="table mt-1">
+    <thead class="thead-light">
+  <tr>
+
+    <th class="text-center">Order No</th>
+    <th class="text-center">Account No</th>
+    <th class="text-center">Date</th>
+    <th class="text-center">Status</th>
+    <th class="text-center">Service</th>
+    <th class="text-center">Executive</th>
+    <th class="text-center">Another Order</th>
+
+  </tr>
+{% for order in opportunityorders%}
+  <tr>
+  <td class="border text-center">{{order.orderno}}</td>
+  <td class="border text-center">{{order.accountno}}</td>
+  <td class="border text-center">{{order.creationdate}}</td>
+  <td class="border text-center">{{order.status}}</td>
+  <td class="border text-center">{{order.service}}</td>
+  <td class="border text-center">{{order.operationexecutive}}</td>
+  {% if opportunitynow.status|stringformat:"s"  == 'Document' %}
+  <td class="border text-center">
+  <button type="button" class="btn btn-info btn-sm"><a href="{% url 'orderdouble' pk=opportunitynow.id pk1=order.id %}" class="text-white">Double order</a></button>
+  </td>
+{% endif %}
+  </tr>
+
+
+
+
+{% endfor %}
+</table>
+{% else%}
+
+<h5>There is no orders</h5>
+
+{% endif %}
+
+<span>
+
+<button  class="btn btn-outline-primary"><a href="{% url 'opportunityupdate' pk=opportunitynow.id %}">Update</a></button>
+
+</span>
+
+
+<span>{% if opportunitynow.status|stringformat:"s"  == 'Negotiation' %}
+<button type="button" class="btn btn-link"><a href="{% url 'proposal' pk=opportunitynow.id %}">Change To Proposal</a></button>
+{% endif %}</span>
+
+{% if opportunitynow.status|stringformat:"s"  == 'Proposal' %}
+<button type="button" class="btn btn-link"><a href="{% url 'document' pk=opportunitynow.id %}">Change To Document</a></button>
+{% endif %}
+{% if opportunitynow.status|stringformat:"s"  == 'Proposal' %}
+<button type="button" class="btn btn-link"><a href="{% url 'negotiation' pk=opportunitynow.id %}">Change To Negotiation</a></button>
+{% endif %}
+
+{% if opportunitynow.status|stringformat:"s"  == 'Document' %}
+<button class="btn btn-outline-primary"><a href="{% url 'newordero' pk=opportunitynow.id %}">Add Order</a></button>
+{% endif %}
+
+
+
+{% endblock %}

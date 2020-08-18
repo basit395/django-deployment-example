@@ -1,0 +1,45 @@
+{% extends 'crmapp/base.html' %}
+
+
+{% block content %}
+
+
+
+<div class="container mt-5">
+
+
+<button  class="btn-primary text-light"><a class="text-light "href="">New Employee</a></button>
+
+
+{% if stafflist %}
+
+<table class="table mt-5">
+    <thead class="thead-dark">
+  <tr>
+    <th class="text-center">Name</th>
+    <th class="text-center">User</th>
+    <th class="text-center">Email</th>
+    <th class="text-center">Status</th>
+    <th class="text-center">Job Title</th>
+
+
+  </tr>
+  {% for staff in stafflist %}
+  <tr>
+  <td class="border text-center"><a href="">{{staff.first_name}}-{{staff.last_name}}</a></td>
+  <td class="border text-center">{{staff.username}}</td>
+  <td class="border text-center">{{staff.email}}</td>
+  <td class="border text-center">{{staff.is_active}}</td>
+  <td class="border text-center">{{staff.employeejobtitle}}</td>
+
+  </tr>
+  {% endfor %}
+</table>
+
+{% endif %}
+
+</div>
+
+
+
+  {% endblock %}
